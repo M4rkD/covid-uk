@@ -23,6 +23,7 @@ n_runs = as.numeric(argv[argc]);
 covid_uk_path = "~/Dropbox/COVID-UK/"
 
 # covidm options
+cm_build_dir = tempdir();
 cm_path = paste0(covid_uk_path, "/covidm/");
 if (grepl(Sys.info()["user"], pattern = "^adamkuchars(ki)?$")) { cm_path = "~/Documents/GitHub/covidm/" }
 source(paste0(cm_path, "/R/covidm.R"))
