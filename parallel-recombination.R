@@ -4,7 +4,7 @@ library(qs)           # for qsave and qread, faster equivalents of saveRDS and r
 library(data.table)   # for data.table, an enhanced (and faster) data.frame
 
 
-covid_uk_path = "/home/mark/code/cmmid-covid-uk"
+covid_uk_path = dirname(thisfile())
 
 cm_path = paste0(covid_uk_path, "/covidm/");
 source(paste0(cm_path, "/R/covidm_misc.R"))
