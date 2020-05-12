@@ -4,6 +4,7 @@
 
 library(rlang)
 library(stringr)
+library(rprojroot)
 
 # Load requested settings from command line
 argv = commandArgs(trailingOnly = T);
@@ -20,7 +21,7 @@ n_runs = as.numeric(argv[argc]);
 
 # Set path
 # Set this path to the base directory of the repository.
-covid_uk_path = "~/Dropbox/COVID-UK/"
+covid_uk_path = dirname(thisfile())
 
 # covidm options
 cm_build_dir = tempdir();
