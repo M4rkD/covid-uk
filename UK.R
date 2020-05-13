@@ -9,15 +9,23 @@ library(rprojroot)
 # Load requested settings from command line
 argv = commandArgs(trailingOnly = T);
 argc = length(argv);
-if (argc == 3) {
-    option.single = as.numeric(argv[argc-2]);
-} else if (argc != 2) {
-    stop("Must provide two arguments: analysis set and number of runs.");
-} else {
+
+if (argc >= 3) {
+    option.single = as.numeric(argv[argc-3]);
+} else if (argc == 2) {
     option.single = -1;
+} else {
+    stop("Must provide at least two arguments: analysis set and number of runs.");
 }
-analysis = as.numeric(argv[argc-1]);
-n_runs = as.numeric(argv[argc]);
+
+analysis = as.numeric(argv[argc-2]);
+n_runs = as.numeric(argv[argc-2]);
+
+if (argc >= 4) {
+  intervention.index = as.numeric(argv[argc]);
+} else {
+  intervention.index = -1;
+}
 
 # Set path
 # Set this path to the base directory of the repository.
@@ -352,6 +360,17 @@ if (option.single < 0) {
 } else {
     run_set = option.single;
     set.seed(1234 + option.single);
+}
+
+if(intervention.index > 0) {
+  if(intervention.index <= length(interventions)) {
+    # only simulation a
+    interventions = interventions[intervention.index]
+  } else {
+    # allow intervention indices out of bounds
+    # but in these cases there is no action
+    quit()
+  }
 }
 
 for (r in run_set) {
