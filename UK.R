@@ -439,18 +439,21 @@ for (r in run_set) {
     params = cm_iv_apply(params, iv);
     
     # 4c. Run model
-    run = cm_simulate(params, 1, r);
-    run$dynamics[, run := r];
-    run$dynamics[, scenario := "Base"];
-    run$dynamics[, R0 := R0s[r]];
-    save(run);
-    totals = add_totals(run, totals);
-    dynamics = add_dynamics(run, dynamics, iv);
-    peak_t = run$dynamics[compartment == "cases", .(total_cases = sum(value)), by = t][, t[which.max(total_cases)]];
-    peak_t_bypop = run$dynamics[compartment == "cases", .(total_cases = sum(value)), by = .(t, population)][, t[which.max(total_cases)], by = population]$V1;
+    if(any(str_detect(option.trigger, "national|local"))) {
+      # The reference simulation is only require for national or local triggers
+      run = cm_simulate(params, 1, r);
+      run$dynamics[, run := r];
+      run$dynamics[, scenario := "Base"];
+      run$dynamics[, R0 := R0s[r]];
+      save(run);
+      totals = add_totals(run, totals);
+      dynamics = add_dynamics(run, dynamics, iv);
+      peak_t = run$dynamics[compartment == "cases", .(total_cases = sum(value)), by = t][, t[which.max(total_cases)]];
+      peak_t_bypop = run$dynamics[compartment == "cases", .(total_cases = sum(value)), by = .(t, population)][, t[which.max(total_cases)], by = population]$V1;
 
-    rm(run)
-    gc()
+      rm(run)
+      gc()
+    }
 
     # 5. Run interventions
     for (i in seq_along(interventions)) {
