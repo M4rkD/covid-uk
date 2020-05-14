@@ -48,8 +48,14 @@ if (n_runs == 1) {
 # Set this path to the base directory of the repository.
 covid_uk_path = normalizePath(dirname(thisfile()))
 
+# If TMPDIR environment variable is set, use a temporary directory
+# This should be set if running multiple simulations in parallel,
+# to avoid the builds tripping over each other.
+if(Sys.getenv("TMPDIR") != "") {
+  cm_build_dir = tempdir();
+}
+
 # covidm options
-cm_build_dir = tempdir();
 cm_path = file.path(covid_uk_path, "covidm");
 source(file.path(cm_path, "R/covidm.R"))
 
