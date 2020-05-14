@@ -46,13 +46,12 @@ if (n_runs == 1) {
 
 # Set path
 # Set this path to the base directory of the repository.
-covid_uk_path = dirname(thisfile())
+covid_uk_path = normalizePath(dirname(thisfile()))
 
 # covidm options
 cm_build_dir = tempdir();
-cm_path = paste0(covid_uk_path, "/covidm/");
-if (grepl(Sys.info()["user"], pattern = "^adamkuchars(ki)?$")) { cm_path = "~/Documents/GitHub/covidm/" }
-source(paste0(cm_path, "/R/covidm.R"))
+cm_path = file.path(covid_uk_path, "covidm");
+source(file.path(cm_path, "R/covidm.R"))
 
 # build parameters for entire UK, for setting R0.
 parametersUK1 = cm_parameters_SEI3R(cm_uk_locations("UK", 0), 
@@ -172,8 +171,8 @@ observer_lockdown = function(lockdown_trigger) function(time, dynamics)
 }
 
 # Load age-varying symptomatic rate
-covid_scenario = qread(paste0(covid_uk_path, "/data/2-linelist_symp_fit_fIa0.5.qs"));
-#covid_scenario2 = qread(paste0(covid_uk_path, "/data/2-linelist_both_fit_fIa0.5-rbzvi.qs"));
+covid_scenario = qread(file.path(covid_uk_path, "data/2-linelist_symp_fit_fIa0.5.qs"));
+#covid_scenario2 = qread(file.path(covid_uk_path, "data/2-linelist_both_fit_fIa0.5-rbzvi.qs"));
 
 # Identify London boroughs for early seeding, and regions of each country for time courses
 london = cm_structure_UK[match(str_sub(locations, 6), Name), Geography1 %like% "London"]
@@ -184,13 +183,6 @@ nireland = cm_structure_UK[match(str_sub(locations, 6), Name), Code %like% "^N"]
 westmid = cm_structure_UK[match(str_sub(locations, 6), Name), Name == "West Midlands (Met County)"]
 cumbria = cm_structure_UK[match(str_sub(locations, 6), Name), Name == "Cumbria"]
 
-save = function(run)
-{
-    # if (analysis == 3) {
-    #     filename = paste0("~/Dropbox/COVID-UK Storage/", run$dynamics$scenario[1], "-", run$dynamics$run[1], ".qs");
-    #     cm_save(run, filename);
-    # }
-}
 
 add_totals = function(run, totals)
 {
@@ -370,7 +362,7 @@ totals = data.table()
 print(Sys.time())
 set.seed(1234567);
 
-print(paste0(covid_uk_path, analysis, "-dynamics", ifelse(option.single > 0, option.single, ""), ".qs"))
+print(file.path(covid_uk_path, paste0(analysis, "-dynamics", ifelse(option.single > 0, option.single, ""), ".qs")))
 
 if (option.single < 0) {
     run_set = 1:n_runs;
@@ -449,7 +441,7 @@ for (r in run_set) {
     run$dynamics[, run := r];
     run$dynamics[, scenario := "Base"];
     run$dynamics[, R0 := R0s[r]];
-    save(run);
+
     totals = add_totals(run, totals);
     dynamics = add_dynamics(run, dynamics, iv);
     peak_t = run$dynamics[compartment == "cases", .(total_cases = sum(value)), by = t][, t[which.max(total_cases)]];
@@ -525,7 +517,7 @@ for (r in run_set) {
                 run$dynamics[, run := r];
                 run$dynamics[, scenario := paste0(names(interventions)[i], tag)];
                 run$dynamics[, R0 := R0s[r]];
-                save(run);
+
                 totals = add_totals(run, totals);
                 dynamics = add_dynamics(run, dynamics, iv);
         
@@ -537,6 +529,6 @@ for (r in run_set) {
       }
     }
 }
-cm_save(totals, paste0(covid_uk_path, analysis, "-totals", ifelse(option.single > 0, option.single, ""), ".qs"));
-cm_save(dynamics, paste0(covid_uk_path, analysis, "-dynamics", ifelse(option.single > 0, option.single, ""), ".qs"));
+cm_save(totals, file.path(covid_uk_path, "output", paste0(analysis, "-totals", ifelse(option.single > 0, option.single, ""), ".qs")));
+cm_save(dynamics, file.path(covid_uk_path, "output", paste0(analysis, "-dynamics", ifelse(option.single > 0, option.single, ""), ".qs")));
 print(Sys.time())
