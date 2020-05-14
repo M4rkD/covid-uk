@@ -23,8 +23,12 @@ n_runs = as.numeric(argv[argc]);
 # Set this path to the base directory of the repository.
 covid_uk_path = dirname(thisfile())
 
+# If TMPDIR environment variable is set, use a temporary directory
+if(Sys.getenv("TMPDIR") != "") {
+  cm_build_dir = tempdir();
+}
+
 # covidm options
-cm_build_dir = tempdir();
 cm_path = paste0(covid_uk_path, "/covidm/");
 if (grepl(Sys.info()["user"], pattern = "^adamkuchars(ki)?$")) { cm_path = "~/Documents/GitHub/covidm/" }
 source(paste0(cm_path, "/R/covidm.R"))
