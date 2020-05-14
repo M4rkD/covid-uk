@@ -6,6 +6,26 @@ library(rlang)
 library(stringr)
 library(rprojroot)
 
+
+# USAGE:
+#
+#     Rscript UK.R [single_simulation_id] analysis_id number_of_simulations
+#
+# Arguments:
+#
+#     analysis_id: The analysis to run. Currently one of 1, 2.1, 2.2, 3, 4, 5, 6
+#
+#     number_of_simulations: The total number of simulations being run, or the
+#         total number of random seeds. When single_simulation_id is not supplied
+#         then UK.R will run this many simulations in sequence. When single_simulation_id
+#         is supplied, then UK.R will only run that single simulation, but will structure
+#         the computation so as to work with the correct total number of simulations.
+#         This should almost certainly not be set to 1.
+#
+#     single_simulation_id: When running a battery of simulations in parallel, this
+#         indexes and distinguishes the individual simulations. This should be an
+#         integer between 1 and number_of_simulations, inclusive.
+
 # Load requested settings from command line
 argv = commandArgs(trailingOnly = T);
 argc = length(argv);
@@ -18,6 +38,11 @@ if (argc == 3) {
 }
 analysis = as.numeric(argv[argc-1]);
 n_runs = as.numeric(argv[argc]);
+
+if (n_runs == 1) {
+    print(paste("WARNING: Requested an ensemble comprising a single configuration.",
+                "This is almost certainly not what you intended to do."));
+}
 
 # Set path
 # Set this path to the base directory of the repository.
