@@ -1,4 +1,8 @@
+#ifdef WITH_MKL
+#include <mkl.h>
+#else
 #include <gsl/gsl_sf_gamma.h>
+#endif
 
 //
 // TIMING
@@ -41,6 +45,26 @@ void ShowClockInfo()
 
 struct Parameters;
 
+/* To use MKL multinomial efficiently, we want a contiguous data
+   structure for x. Borrowing this implementation from
+   https://stackoverflow.com/questions/57751942/allocate-contiguous-memory-for-a-3d-array-in-c
+*/
+
+template<typename T>
+struct Vec3D {
+  int NShifts, NVariants, SizeOfP;
+  std::vector<T> data;
+
+  Matrix3D(int NShifts, int NVariants, int SizeOfP)
+  : NShifts(NShifts), NVariants(NVariants), SizeOfP(SizeOfP), data(NShifts * NVariants * SizeOfP, 0)
+  { }
+
+  T& operator()(int shift, int variant, int element_of_p) {
+    return data[(shift*NVariants + variant)*SizeOfP + element_of_p];
+  }
+};
+
+
 class MNApprox
 {
 public:
@@ -58,7 +82,7 @@ public:
             {
                 for (unsigned int i = 0; i < out.size(); ++i)
                 {
-                    out[i] += x[shift][cycle[shift]][i];
+                    out[i] += x(shift, cycle[shift], i);
                 }
                 cycle[shift] = (cycle[shift] + 1) & VariantMask;
             }
@@ -66,7 +90,7 @@ public:
     }
 
 private:
-    vector<vector<vector<unsigned int>>> x;
+    Vec3D x;
     vector<unsigned int> cycle;
 };
 
@@ -134,9 +158,16 @@ struct Matrix
 
 void MNApprox::Set(Parameters& P, Randomizer& Rand, vector<double>& p)
 {
-    x.assign(32, vector<vector<unsigned int>>(NVariants, vector<unsigned int>(p.size(), 0)));
+    x = Vec3D(32, NVariants, p.size());
     cycle.assign(NVariants, 0);
-    for (unsigned int shift = 0; shift < 32; ++shift)
-        for (unsigned int variant = 0; variant < NVariants; ++variant)
-            gsl_ran_multinomial(Rand.GSL_RNG(), p.size(), 1 << shift, &p[0], &x[shift][variant][0]);
+    for (unsigned int shift = 0; shift < 32; ++shift) {
+#ifdef WITH_MKL
+        err = viRngMultinomial(VSL_RNG_METHOD_MULTINOMIAL_MULTPOISSON, Rand.MKL_RNG(), NVariants, &x(shift, 0, 0), 1 << shift, p.size(), &p[0]);
+	CHECK_ERROR();
+#else
+        for (unsigned int variant = 0; variant < NVariants; ++variant) {
+	  gsl_ran_multinomial(Rand.GSL_RNG(), p.size(), 1 << shift, &p[0], &x(shift, variant, 0));
+	}
+#endif
+    }
 }
