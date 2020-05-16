@@ -6,7 +6,7 @@ ANALYSIS=$2
 NUMBER_OF_SEEDS=$3
 
 # Create a build directory in the RAM disk so run is independent
-TMPDIR=$(mktemp --directory --tmpdir=/dev/shm)
+export TMPDIR=$(mktemp --directory --tmpdir=/dev/shm)
 
 # Don't leave a mess if terminated halfway through
 term_handler() {
