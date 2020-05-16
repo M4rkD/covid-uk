@@ -26,12 +26,11 @@ message("start simulation...");
 # params$time1 = "2021-12-31"
 
 # test parameters
-params$date0 = "2020-01-29"
-params$time1 = "2020-03-06"
+params$time1 = 37
 
 start_time = Sys.time()
 
-run = cm_simulate(params, 1, r);
+run = cm_backend_simulate(params, 1, r);
 
 message("finished simulation");
 message(sprintf("Simulation took %f seconds", Sys.time() - start_time));
