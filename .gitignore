@@ -4,6 +4,8 @@ Icon*
 
 *.pdf
 
+table-*.csv
+
 covidm/build/
 
 submission/
