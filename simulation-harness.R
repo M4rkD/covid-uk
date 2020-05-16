@@ -2,7 +2,8 @@
 # UK model: load data and analyse scenarios
 # - - - - - - - - - - - - - - - - - - - - - - -
 
-Sys.setenv(CPATH="/home/mark/R/x86_64-pc-linux-gnu-library/3.6/nloptr/include/")
+Sys.setenv(CPATH="/home/mark/R/x86_64-pc-linux-gnu-library/3.6/nloptr/include/",
+	   R_DATATABLE_NUM_THREADS="1")
 
 library(rlang)
 library(stringr)
