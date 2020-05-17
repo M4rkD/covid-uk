@@ -7,6 +7,7 @@ NUMBER_OF_SEEDS=$3
 
 # Create a build directory in the RAM disk so run is independent
 export TMPDIR=$(mktemp --directory --tmpdir=/dev/shm)
+export R_DATATABLE_NUM_THREADS=1
 
 # Don't leave a mess if terminated halfway through
 term_handler() {
