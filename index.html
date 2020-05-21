@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml version="1.0" encoding="utf-8"?>
-<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-05-22 Fri 21:13 -->
+<!-- 2020-05-22 Fri 21:03 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>UK.R</title>
@@ -228,50 +227,50 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org144981a">1. Disclaimer</a></li>
-<li><a href="#orgf4842ed">2. Approach</a></li>
-<li><a href="#orgb09b6cd">3. UK.R Walkthrough</a>
+<li><a href="#orgc406a0a">1. Disclaimer</a></li>
+<li><a href="#org7997f80">2. Approach</a></li>
+<li><a href="#orgbc56d11">3. UK.R Walkthrough</a>
 <ul>
-<li><a href="#org9f484ca">3.1. Setup</a></li>
-<li><a href="#org10b9c07">3.2. Locations</a></li>
+<li><a href="#org090f25d">3.1. Setup</a></li>
+<li><a href="#orgf368307">3.2. Locations</a></li>
 </ul>
 </li>
-<li><a href="#org57a656a">4. UK Parameters</a>
+<li><a href="#orgfeff298">4. UK Parameters</a>
 <ul>
-<li><a href="#orgbb9a5b1">4.1. Contact Matrices:</a></li>
+<li><a href="#org187b011">4.1. Contact Matrices:</a></li>
 </ul>
 </li>
-<li><a href="#org58244d6">5. UK Regions</a>
+<li><a href="#org5921cdb">5. UK Regions</a>
 <ul>
-<li><a href="#orgcafcee8">5.1. Regional parameter setup</a></li>
-<li><a href="#orgbb45ad0">5.2. Split matrices.</a></li>
-<li><a href="#org0abdda9">5.3. Aggregate function</a>
+<li><a href="#org2a979c8">5.1. Regional parameter setup</a></li>
+<li><a href="#org7aaadfb">5.2. Split matrices.</a></li>
+<li><a href="#orgb7797d2">5.3. Aggregate function</a>
 <ul>
-<li><a href="#orgd30b1ef">5.3.1. Collect functions</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#orgdeb4de2">6. Main</a></li>
-<li><a href="#orgfa6a723">7. Start Runs</a>
-<ul>
-<li><a href="#org0efea24">7.1. Base simulation</a>
-<ul>
-<li><a href="#orgb7be13e">7.1.1. Run &ldquo;base&rdquo; simulation</a></li>
-<li><a href="#orgc6cd19a">7.1.2. Interventions</a></li>
+<li><a href="#org4ae1cf6">5.3.1. Collect functions</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org95284f7">8. Appendix</a>
+<li><a href="#orgc52dfdf">6. Main</a></li>
+<li><a href="#org44625a1">7. Start Runs</a>
 <ul>
-<li><a href="#org24ede05">8.1. Regions/Locations</a>
+<li><a href="#org5644f51">7.1. Base simulation</a>
 <ul>
-<li><a href="#org5a254e9">8.1.1. level 0</a></li>
-<li><a href="#orgba905ec">8.1.2. level 1</a></li>
-<li><a href="#org005463b">8.1.3. level 2</a></li>
-<li><a href="#orgf428097">8.1.4. level 3</a></li>
-<li><a href="#org5f8d9c4">8.1.5. level 4</a></li>
+<li><a href="#orgd375d0a">7.1.1. Run &ldquo;base&rdquo; simulation</a></li>
+<li><a href="#org6d8b8a7">7.1.2. Interventions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orga56acdd">8. Appendix</a>
+<ul>
+<li><a href="#org25b14fe">8.1. Regions/Locations</a>
+<ul>
+<li><a href="#orgcce0198">8.1.1. level 0</a></li>
+<li><a href="#org69b5507">8.1.2. level 1</a></li>
+<li><a href="#org8a56064">8.1.3. level 2</a></li>
+<li><a href="#orgc0b4ba8">8.1.4. level 3</a></li>
+<li><a href="#orgeea4fe2">8.1.5. level 4</a></li>
 </ul>
 </li>
 </ul>
@@ -280,16 +279,16 @@
 </div>
 </div>
 
-<div id="outline-container-org144981a" class="outline-2">
-<h2 id="org144981a"><span class="section-number-2">1</span> Disclaimer</h2>
+<div id="outline-container-orgc406a0a" class="outline-2">
+<h2 id="orgc406a0a"><span class="section-number-2">1</span> Disclaimer</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 <b>This is an exploratory document, and highly likely to contain omissions and/or errors. Please verify any and all information you find here yourself, as I give absolutely no guarantee that any of it is correct.</b>
 </p>
 </div>
 </div>
-<div id="outline-container-orgf4842ed" class="outline-2">
-<h2 id="orgf4842ed"><span class="section-number-2">2</span> Approach</h2>
+<div id="outline-container-org7997f80" class="outline-2">
+<h2 id="org7997f80"><span class="section-number-2">2</span> Approach</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>Treat C++ code as a black box for config</li>
@@ -301,8 +300,8 @@
 </div>
 </div>
 
-<div id="outline-container-orgb09b6cd" class="outline-2">
-<h2 id="orgb09b6cd"><span class="section-number-2">3</span> UK.R Walkthrough</h2>
+<div id="outline-container-orgbc56d11" class="outline-2">
+<h2 id="orgbc56d11"><span class="section-number-2">3</span> UK.R Walkthrough</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 This section walks through the UK.R, showing clip of each section and the resulting data structures.
@@ -313,8 +312,8 @@ This done for a hypothetical simulation, for a single iteration of the loop over
 </p>
 </div>
 
-<div id="outline-container-org9f484ca" class="outline-3">
-<h3 id="org9f484ca"><span class="section-number-3">3.1</span> Setup</h3>
+<div id="outline-container-org090f25d" class="outline-3">
+<h3 id="org090f25d"><span class="section-number-3">3.1</span> Setup</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 The first section of the code consists of setup, reading parameters and importing libraries.
@@ -353,8 +352,8 @@ cm_path = file.path(covid_uk_path, <span style="color: #50a14f;">"covidm"</span>
 </div>
 </div>
 
-<div id="outline-container-org10b9c07" class="outline-3">
-<h3 id="org10b9c07"><span class="section-number-3">3.2</span> Locations</h3>
+<div id="outline-container-orgf368307" class="outline-3">
+<h3 id="orgf368307"><span class="section-number-3">3.2</span> Locations</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 The granularity of simulation is controlled by a list of &ldquo;locations&rdquo; or regions to simluate
@@ -396,8 +395,8 @@ level  4  =  382 regions
 </div>
 </div>
 
-<div id="outline-container-org57a656a" class="outline-2">
-<h2 id="org57a656a"><span class="section-number-2">4</span> UK Parameters</h2>
+<div id="outline-container-orgfeff298" class="outline-2">
+<h2 id="orgfeff298"><span class="section-number-2">4</span> UK Parameters</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 Build parameters. This includes a population matrix for each of the locations.
@@ -568,8 +567,8 @@ Comments, from further down the script, on the same parameters:
 </div>
 </div>
 
-<div id="outline-container-orgbb9a5b1" class="outline-3">
-<h3 id="orgbb9a5b1"><span class="section-number-3">4.1</span> Contact Matrices:</h3>
+<div id="outline-container-org187b011" class="outline-3">
+<h3 id="org187b011"><span class="section-number-3">4.1</span> Contact Matrices:</h3>
 <div class="outline-text-3" id="text-4-1">
 
 <div class="figure">
@@ -672,12 +671,12 @@ i         j         value
 </div>
 </div>
 
-<div id="outline-container-org58244d6" class="outline-2">
-<h2 id="org58244d6"><span class="section-number-2">5</span> UK Regions</h2>
+<div id="outline-container-org5921cdb" class="outline-2">
+<h2 id="org5921cdb"><span class="section-number-2">5</span> UK Regions</h2>
 <div class="outline-text-2" id="text-5">
 </div>
-<div id="outline-container-orgcafcee8" class="outline-3">
-<h3 id="orgcafcee8"><span class="section-number-3">5.1</span> Regional parameter setup</h3>
+<div id="outline-container-org2a979c8" class="outline-3">
+<h3 id="org2a979c8"><span class="section-number-3">5.1</span> Regional parameter setup</h3>
 <div class="outline-text-3" id="text-5-1">
 <p>
 Set up regional parameters, down to county level (level = 3)
@@ -772,8 +771,8 @@ Matrices for first population:
 </div>
 </div>
 
-<div id="outline-container-orgbb45ad0" class="outline-3">
-<h3 id="orgbb45ad0"><span class="section-number-3">5.2</span> Split matrices.</h3>
+<div id="outline-container-org7aaadfb" class="outline-3">
+<h3 id="org7aaadfb"><span class="section-number-3">5.2</span> Split matrices.</h3>
 <div class="outline-text-3" id="text-5-2">
 <p>
 Second parameter is bounds, set to index of &ldquo;70-74&rdquo;. Two
@@ -1122,12 +1121,12 @@ Columns for from 0-100.
 </div>
 </div>
 
-<div id="outline-container-org0abdda9" class="outline-3">
-<h3 id="org0abdda9"><span class="section-number-3">5.3</span> Aggregate function</h3>
+<div id="outline-container-orgb7797d2" class="outline-3">
+<h3 id="orgb7797d2"><span class="section-number-3">5.3</span> Aggregate function</h3>
 <div class="outline-text-3" id="text-5-3">
 </div>
-<div id="outline-container-orgd30b1ef" class="outline-4">
-<h4 id="orgd30b1ef"><span class="section-number-4">5.3.1</span> Collect functions</h4>
+<div id="outline-container-org4ae1cf6" class="outline-4">
+<h4 id="org4ae1cf6"><span class="section-number-4">5.3.1</span> Collect functions</h4>
 <div class="outline-text-4" id="text-5-3-1">
 <p>
 Two functions that are used later to aggregate results.
@@ -1187,8 +1186,8 @@ add_dynamics = <span style="color: #e45649;">function</span>(run, dynamics, iv)
 </div>
 </div>
 </div>
-<div id="outline-container-orgdeb4de2" class="outline-2">
-<h2 id="orgdeb4de2"><span class="section-number-2">6</span> Main</h2>
+<div id="outline-container-orgc52dfdf" class="outline-2">
+<h2 id="orgc52dfdf"><span class="section-number-2">6</span> Main</h2>
 <div class="outline-text-2" id="text-6">
 <p>
 Define school terms (base vs intervention)
@@ -1268,12 +1267,12 @@ Seed again
 </div>
 </div>
 </div>
-<div id="outline-container-orgfa6a723" class="outline-2">
-<h2 id="orgfa6a723"><span class="section-number-2">7</span> Start Runs</h2>
+<div id="outline-container-org44625a1" class="outline-2">
+<h2 id="org44625a1"><span class="section-number-2">7</span> Start Runs</h2>
 <div class="outline-text-2" id="text-7">
 </div>
-<div id="outline-container-org0efea24" class="outline-3">
-<h3 id="org0efea24"><span class="section-number-3">7.1</span> Base simulation</h3>
+<div id="outline-container-org5644f51" class="outline-3">
+<h3 id="org5644f51"><span class="section-number-3">7.1</span> Base simulation</h3>
 <div class="outline-text-3" id="text-7-1">
 <p>
 First thing is setup for a base simulation.
@@ -1513,8 +1512,8 @@ Contact Matrices:
 </div>
 </div>
 
-<div id="outline-container-orgb7be13e" class="outline-4">
-<h4 id="orgb7be13e"><span class="section-number-4">7.1.1</span> Run &ldquo;base&rdquo; simulation</h4>
+<div id="outline-container-orgd375d0a" class="outline-4">
+<h4 id="orgd375d0a"><span class="section-number-4">7.1.1</span> Run &ldquo;base&rdquo; simulation</h4>
 <div class="outline-text-4" id="text-7-1-1">
 <p>
 Base simulation is run from parameters with a given <code>r</code>
@@ -1585,8 +1584,8 @@ Summary of value field:
 </div>
 </div>
 
-<div id="outline-container-orgc6cd19a" class="outline-4">
-<h4 id="orgc6cd19a"><span class="section-number-4">7.1.2</span> Interventions</h4>
+<div id="outline-container-org6d8b8a7" class="outline-4">
+<h4 id="org6d8b8a7"><span class="section-number-4">7.1.2</span> Interventions</h4>
 <div class="outline-text-4" id="text-7-1-2">
 <p>
 For each different &ldquo;case&rdquo;, which could be an intervention and some parameters, a
@@ -1743,16 +1742,16 @@ start? (9 entries and 16 age bands, 12 compartments).
 </div>
 </div>
 </div>
-<div id="outline-container-org95284f7" class="outline-2">
-<h2 id="org95284f7"><span class="section-number-2">8</span> Appendix</h2>
+<div id="outline-container-orga56acdd" class="outline-2">
+<h2 id="orga56acdd"><span class="section-number-2">8</span> Appendix</h2>
 <div class="outline-text-2" id="text-8">
 </div>
-<div id="outline-container-org24ede05" class="outline-3">
-<h3 id="org24ede05"><span class="section-number-3">8.1</span> Regions/Locations</h3>
+<div id="outline-container-org25b14fe" class="outline-3">
+<h3 id="org25b14fe"><span class="section-number-3">8.1</span> Regions/Locations</h3>
 <div class="outline-text-3" id="text-8-1">
 </div>
-<div id="outline-container-org5a254e9" class="outline-4">
-<h4 id="org5a254e9"><span class="section-number-4">8.1.1</span> level 0</h4>
+<div id="outline-container-orgcce0198" class="outline-4">
+<h4 id="orgcce0198"><span class="section-number-4">8.1.1</span> level 0</h4>
 <div class="outline-text-4" id="text-8-1-1">
 <p>
 Look for regions with different level/granularity:
@@ -1776,8 +1775,8 @@ We can do the same thing for regions of the UK at level 2
 </p>
 </div>
 </div>
-<div id="outline-container-orgba905ec" class="outline-4">
-<h4 id="orgba905ec"><span class="section-number-4">8.1.2</span> level 1</h4>
+<div id="outline-container-org69b5507" class="outline-4">
+<h4 id="org69b5507"><span class="section-number-4">8.1.2</span> level 1</h4>
 <div class="outline-text-4" id="text-8-1-2">
 <p>
 Look for regions with different level/granularity:
@@ -1798,8 +1797,8 @@ Wales is here as an aggregate region.
 </div>
 </div>
 
-<div id="outline-container-org005463b" class="outline-4">
-<h4 id="org005463b"><span class="section-number-4">8.1.3</span> level 2</h4>
+<div id="outline-container-org8a56064" class="outline-4">
+<h4 id="org8a56064"><span class="section-number-4">8.1.3</span> level 2</h4>
 <div class="outline-text-4" id="text-8-1-3">
 <div class="org-src-container">
 <pre class="src src-R">locations = cm_uk_locations(<span style="color: #50a14f;">"UK"</span>, <span style="color: #da8548; font-weight: bold;">2</span>);
@@ -1825,8 +1824,8 @@ UK | NORTHERN IRELAND
 </div>
 </div>
 
-<div id="outline-container-orgf428097" class="outline-4">
-<h4 id="orgf428097"><span class="section-number-4">8.1.4</span> level 3</h4>
+<div id="outline-container-orgc0b4ba8" class="outline-4">
+<h4 id="orgc0b4ba8"><span class="section-number-4">8.1.4</span> level 3</h4>
 <div class="outline-text-4" id="text-8-1-4">
 <div class="org-src-container">
 <pre class="src src-R">locations = cm_uk_locations(<span style="color: #50a14f;">"UK"</span>, <span style="color: #da8548; font-weight: bold;">3</span>);
@@ -2026,8 +2025,8 @@ UK | Newry, Mourne and Down
 </div>
 </div>
 
-<div id="outline-container-org5f8d9c4" class="outline-4">
-<h4 id="org5f8d9c4"><span class="section-number-4">8.1.5</span> level 4</h4>
+<div id="outline-container-orgeea4fe2" class="outline-4">
+<h4 id="orgeea4fe2"><span class="section-number-4">8.1.5</span> level 4</h4>
 <div class="outline-text-4" id="text-8-1-5">
 <div class="org-src-container">
 <pre class="src src-R">locations = cm_uk_locations(<span style="color: #50a14f;">"UK"</span>, <span style="color: #da8548; font-weight: bold;">4</span>);
@@ -2427,7 +2426,7 @@ UK | Newry, Mourne and Down
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: mark</p>
-<p class="date">Created: 2020-05-22 Fri 21:13</p>
+<p class="date">Created: 2020-05-22 Fri 21:03</p>
 </div>
 </body>
 </html>
