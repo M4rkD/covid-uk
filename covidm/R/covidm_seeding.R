@@ -146,8 +146,11 @@ seeder_weight_by_population <- function() {
   }
 }
 
-seeder_sample_poisson <- function() {
+seeder_sample_poisson <- function(seed) {
+  force(seed)
+
   function(curve, params, ipop) {
+    set.seed(seed)
     rpois(length(curve), curve)
   }
 }
@@ -155,18 +158,18 @@ seeder_sample_poisson <- function() {
 seeder_chain <- function(source, ...) {
   "Takes in a list of seeders (functions of three arguments), and calls them in a chain with the correct arguments"
   function(params, ipop) {
-    curve <- reduce(..., function(curve, fun) {
+    curve <- reduce(list(...), function(curve, fun) {
       fun(curve, params, ipop)
     }, .init = source(params, ipop))
   }
 }
 
-seeder_default_exp <- function(init = 10, total = 100, expgrowth = 1.05, p_ht = 0.5, ht_day = 48, ndays = 67) {
+seeder_default_exp <- function(init = 10, total = 100, expgrowth = 1.05, p_ht = 0.5, ht_day = 48, ndays = 67, seed = NULL) {
   forcemulti(init, total, expgrowth, p_ht, ht_day, ndays)
 
   seeder_chain(
     seeder_source_exp_growth_curve(init, total, expgrowth, p_ht, ht_day, ndays),
     seeder_weight_by_population(),
-    seeder_sample_poisson()
+    seeder_sample_poisson(seed)
   )
 }

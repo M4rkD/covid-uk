@@ -382,3 +382,61 @@ with_default_health_info <- function(params) {
 
   return(params)
 }
+
+with_dates <- function(params, start_date, end_date = NULL, days = NULL) {
+  params$date0 <- start_date
+
+  if (is.null(end_date)) {
+    end_date <- ymd(start_date) + days
+  }
+
+  if (!is.null(end_date) & !is.null(days)) {
+    stop("Error: shouldn't provide both end_date and days")
+  }
+
+  params$time1 <- end_date
+
+  return(params)
+}
+
+#------------------------------------------------------------------------------
+# Parameter sweeps and collecting results
+#------------------------------------------------------------------------------
+with_run <- function(irun, .vars, .func) {
+  "Run a parameter run for the given combo."
+  with_sweep(.vars[irun, ], func)
+}
+
+with_sweep <- function(.vars, .func) {
+  "Run a parameter sweep over every combination of members of the list .vars, using pmap, and return a list of the results."
+  pmap(.vars, function(...) {
+    run_simulation(.func(...))
+  })
+}
+
+with_sweep_saving <- function(.vars, .func, dir) {
+  "Run a parameter sweep over every combination of members of the list .vars, using pmap, and return a list of the results."
+  i <- 0
+  pwalk(.vars, function(...) {
+    result <- run_simulation(.func(...))
+    result$iteration_params <- list(...)
+    i <<- i + 1
+    filepath <- file.path(dir, paste0(i, ".rds"))
+    qsave(result, filepath)
+  })
+}
+
+with_collect_dynamics <- function(results) {
+  "Bind a list of simulation results into a single tibble"
+  i <- 0
+  reduce(results, function(agg, res) {
+    i <<- i + 1
+    res$dynamics$run <- i
+    rbind(agg, res$dynamics)
+  }, .init = tibble())
+}
+
+with_sweep_collecting <- function(...) {
+  "Run a sweep, and collect/bind the dynamics."
+  with_collect_dynamics(with_sweep(...))
+}
