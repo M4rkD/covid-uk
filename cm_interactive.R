@@ -223,19 +223,6 @@ params_adj_base_with_seeds <- function(r, u_adj, seed_matrix, params, info = NUL
   params
 }
 
-smooth_over_days <- function(curve, ts_per_day) {
-  unlist(map(1:length(curve), rep, ts_per_day)) / 4
-}
-
-exp_seed_matrix <- function(seed, params, start, total, expgrowth, p_ht, ndays, ts_per_day) {
-  set.seed(seed)
-
-  seed_exp_growth_curve(start, total, expgrowth, p_ht, ndays) %>%
-    smooth_over_days(ts_per_day) %>%
-    weight_by_population(params$pop) %>%
-    poisson_sample_matrix()
-}
-
 pop_set <- function(params, ...) {
   "Sets value in parameters for populations and returns the results.
 Note, this does not mutate the input parameters."

@@ -1,23 +1,3 @@
-# Exponential growth curve for seeding
-seed_exp_growth_curve <- function(init, total, expgrowth, p_ht, ndays) {
-  weights <- rep(0, ndays)
-  weights[init] <- 1
-  for (i in seq(init + 1, ndays)) {
-    weights[i] <- weights[i - 1] * expgrowth
-  }
-  curve <- weights * total * (1 - p_ht) / sum(weights)
-  curve[48] <- curve[48] + total * p_ht
-  curve
-}
-
-weight_by_population <- function(seed_expected, populations) {
-  "Return seeding matrix."
-  pop_sizes <- calc_population_sizes(populations)
-
-  normalised_pop <- pop_sizes / sum(pop_sizes)
-  as.matrix(seed_expected) %*% t(as.matrix(normalised_pop))
-}
-
 plot_seed_matrix <- function(matrix, location_names = NULL, plot = T) {
   "Plot a single seed matrix"
   df <- melt(matrix)
@@ -44,15 +24,6 @@ seeds is a list of numbers, one per day, designating the number of new cases for
   idx <- which(seeds > 0)
   rep <- seeds[idx]
   unlist(mapply(function(i, n) rep(i, n), idx, rep))
-}
-
-poisson_sample_matrix <- function(seed_matrix) {
-  ## Try another way of sampling
-  sampled <- apply(seed_matrix, 2, function(col) rpois(length(col), col))
-
-  dim(sampled) <- dim(seed_matrix)
-
-  sampled
 }
 
 plot_compare_seed_matrices_wales <- function(matrix1, matrix2) {
@@ -134,4 +105,68 @@ Particularly useful when setting u and rates to zero."
   # return a summary
   summary <- df[, .(max = min(max)), by = .(population)]
   format_population_df(summary)
+}
+
+#--------------------------------------------
+# Seeders
+#--------------------------------------------
+
+forcemulti <- function(...) {
+  map(..., force)
+}
+
+# Exponential growth curve for seeding
+seeder_source_exp_growth_curve <- function(init = 10, total = 100, expgrowth = 1.05, p_ht = 0.5, ht_day = 48, ndays = 67) {
+  forcemulti(init, total, expgrowth, p_ht, ht_day, ndays)
+
+  function(params, ipop) {
+    weights <- rep(0, ndays)
+    weights[init] <- 1
+    for (i in seq(init + 1, ndays)) {
+      weights[i] <- weights[i - 1] * expgrowth
+    }
+    curve <- weights * total * (1 - p_ht) / sum(weights)
+    curve[ht_day] <- curve[ht_day] + total * p_ht
+
+    return(curve)
+  }
+}
+
+seeder_weight_by_population <- function() {
+  "Return seeding matrix."
+  function(curve, params, ipop) {
+    pop_sizes <- calc_population_sizes(params$pop)
+    fractional_pop <- pop_sizes / sum(pop_sizes)
+
+
+    params$pop[[ipop]]$seed_curve <-
+      params$pop[[ipop]]$seed_curve * fractional_pop[[ipop]]
+
+    return(curve)
+  }
+}
+
+seeder_sample_poisson <- function() {
+  function(curve, params, ipop) {
+    rpois(length(curve), curve)
+  }
+}
+
+seeder_chain <- function(source, ...) {
+  "Takes in a list of seeders (functions of three arguments), and calls them in a chain with the correct arguments"
+  function(params, ipop) {
+    curve <- reduce(..., function(curve, fun) {
+      fun(curve, params, ipop)
+    }, .init = source(params, ipop))
+  }
+}
+
+seeder_default_exp <- function(init = 10, total = 100, expgrowth = 1.05, p_ht = 0.5, ht_day = 48, ndays = 67) {
+  forcemulti(init, total, expgrowth, p_ht, ht_day, ndays)
+
+  seeder_chain(
+    seeder_source_exp_growth_curve(init, total, expgrowth, p_ht, ht_day, ndays),
+    seeder_weight_by_population(),
+    seeder_sample_poisson()
+  )
 }
