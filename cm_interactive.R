@@ -15,6 +15,13 @@ cm_populations <- readRDS(paste0(cm_path, "/data/wpp2019_pop2020.rds"))
 cm_structure_UK <- readRDS(paste0(cm_path, "/data/structure_UK.rds"))
 covid_scenario <- qread(file.path(cm_path, "../data/2-linelist_symp_fit_fIa0.5.qs"))
 
+# Names and indices of unitary authoritaries
+Auth <- as.list(cm_uk_locations("uk", 3))
+names(Auth) <- gsub("\\||UK|\\s|,", "", Auth)
+
+iAuth <- as.list(1:length(Auth))
+names(iAuth) <- names(Auth)
+
 plan(multicore)
 # plan(sequential)
 
