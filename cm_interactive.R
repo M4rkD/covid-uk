@@ -169,6 +169,7 @@ build_params <- function(date_start, date_end, locations = NULL) {
 run_simulation <- function(params, run = 1, n = 1) {
   "Runs the simulation, setting the runtime."
   start_time <- Sys.time()
+  print(paste0("seeds: ", length(params$pop[[1]]$seed_times)))
   result <- cm_simulate(params, run, 0)
   end_time <- Sys.time()
   result$runtime_seconds <- end_time - start_time
@@ -409,20 +410,30 @@ with_run <- function(irun, .vars, .func) {
 
 with_sweep <- function(.vars, .func) {
   "Run a parameter sweep over every combination of members of the list .vars, using pmap, and return a list of the results."
-  pmap(.vars, function(...) {
+  future_pmap(.vars, function(...) {
     run_simulation(.func(...))
   })
 }
 
 with_sweep_saving <- function(.vars, .func, dir) {
   "Run a parameter sweep over every combination of members of the list .vars, using pmap, and return a list of the results."
-  i <- 0
-  pwalk(.vars, function(...) {
+  print("start")
+  future_pmap_chr(.vars, function(...) {
+    result_uuid <- system("uuid", intern = T)
+    result_filepath <- file.path(dir, paste0(result_uuid, "-result.rds"))
+    params_filepath <- file.path(dir, paste0(result_uuid, "-params.rds"))
+
+    qsave(list(...), params_filepath)
+
+    # simulation
     result <- run_simulation(.func(...))
     result$iteration_params <- list(...)
-    i <<- i + 1
-    filepath <- file.path(dir, paste0(i, ".rds"))
-    qsave(result, filepath)
+
+    qsave(result, result_filepath)
+    rm(result)
+    gc()
+
+    result_uuid
   })
 }
 
