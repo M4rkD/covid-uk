@@ -113,7 +113,7 @@ get_school_terms <- function() {
 with_school_terms <- function(params, school_terms) {
   iv <- cm_iv_build(params)
   cm_iv_set(iv, school_terms$close, school_terms$reopen, contact = c(1, 1, 0, 1, 1, 1, 0, 1, 1), trace_school = 2)
-  populations <- cm_iv_apply(params, iv)
+  params <- cm_iv_apply(params, iv)
 
   return(params)
 }
